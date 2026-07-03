@@ -548,6 +548,106 @@ tr.cheat-hidden { display: none; }
 .grad-item.checked .grad-box { background: var(--ok); border-color: var(--ok); color: #fff; }
 .grad-item.checked .grad-text { text-decoration: line-through; color: var(--text-soft); }
 
+/* ---------------- Daily review: sidebar link ---------------- */
+.nav-review {
+  display: flex; align-items: center; gap: 10px;
+  margin: 4px 8px 10px; padding: 10px 12px; border-radius: var(--radius-sm);
+  background: var(--accent-soft); color: var(--accent-strong);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.nav-review:hover { text-decoration: none; border-color: var(--accent); }
+.nav-review.active { box-shadow: 0 0 0 2px var(--accent) inset; }
+.nr-ico { font-size: 18px; }
+.nr-main { flex: 1; display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.nr-main b { font-size: 14px; }
+.nr-sub { font-size: 11.5px; color: var(--text-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nr-badge {
+  flex: none; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 99px;
+  background: var(--accent); color: #fff; font-size: 12px; font-weight: 700;
+  display: grid; place-items: center;
+}
+.nr-badge.zero { background: var(--ok); }
+
+/* ---------------- Daily review: dashboard banner ---------------- */
+.review-banner {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 20px; margin-bottom: 22px; border-radius: var(--radius);
+  background: var(--bg-panel); border: 1px solid var(--border); color: var(--text);
+}
+.review-banner:hover { text-decoration: none; border-color: var(--accent); box-shadow: var(--shadow); }
+.review-banner.due { border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: var(--accent-soft); }
+.rb-ico { font-size: 26px; flex: none; }
+.rb-text { flex: 1; display: flex; flex-direction: column; }
+.rb-text b { font-size: 15.5px; }
+.rb-text span { font-size: 13.5px; color: var(--text-soft); }
+.rb-cta { flex: none; font-weight: 700; color: var(--accent); }
+
+/* ---------------- Daily review: page ---------------- */
+.review-wrap { max-width: 860px; margin: 0 auto; }
+
+.review-hero {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #fff; border-radius: 18px; padding: 30px 32px; margin-bottom: 22px;
+}
+.rh-eyebrow { font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.9; }
+.rh-left h1 { margin: 8px 0; font-size: 27px; }
+.rh-left p { margin: 0 0 18px; opacity: 0.92; max-width: 52ch; }
+.rh-actions .btn { background: #fff; color: var(--accent-strong); }
+.rh-actions .btn:hover { background: #f0edff; }
+.rh-actions .btn.ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.55); }
+.rh-streak { flex: none; text-align: center; }
+.streak-flame { font-size: 44px; filter: grayscale(1) opacity(0.55); }
+.streak-flame.on { filter: none; }
+.streak-num { font-size: 30px; font-weight: 800; line-height: 1; }
+.streak-lbl { font-size: 12px; opacity: 0.9; }
+
+.review-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+.review-done .review-stats { grid-template-columns: repeat(3, 1fr); max-width: 480px; margin: 20px auto 24px; }
+
+.mastery-track { height: 12px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.mastery-track > i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--ok)); border-radius: 99px; transition: width 0.4s; }
+.mastery-lbl { margin-top: 8px; font-size: 13.5px; color: var(--text-soft); }
+ul.review-how { margin: 0; padding-left: 20px; color: var(--text-soft); font-size: 14.5px; line-height: 1.85; }
+ul.review-how b { color: var(--text); }
+
+/* review card session */
+.review-topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px;
+}
+.rt-quit { background: none; border: none; color: var(--text-faint); font-size: 14px; cursor: pointer; padding: 6px 2px; }
+.rt-quit:hover { color: var(--danger); }
+.rt-progress { flex: 1; display: flex; align-items: center; gap: 12px; }
+.rt-bar { flex: 1; max-width: 420px; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.rt-bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.3s; }
+.rt-progress span { font-size: 13px; color: var(--text-soft); white-space: nowrap; }
+.rt-streak { font-weight: 700; font-size: 14px; }
+
+.review-card {
+  background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 28px 30px; min-height: 260px;
+}
+.rc-source { font-size: 12.5px; color: var(--text-faint); margin-bottom: 16px; }
+.rc-prompt { font-size: 19px; font-weight: 600; line-height: 1.45; margin-bottom: 20px; }
+.review-card .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+.rc-explain { margin-top: 14px; }
+.rc-reveal { display: block; margin-top: 12px; }
+.rc-foot { margin-top: 24px; display: flex; justify-content: flex-end; }
+.rc-next:disabled { opacity: 0.5; cursor: default; }
+
+.review-done { text-align: center; background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: 18px; padding: 40px 32px; box-shadow: var(--shadow); }
+.rd-emoji { font-size: 56px; }
+.review-done h1 { margin: 8px 0; font-size: 27px; }
+.review-done > p { color: var(--text-soft); }
+.rd-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.rd-tip { margin-top: 20px; font-size: 13.5px; color: var(--text-faint); }
+
+@media (max-width: 720px) {
+  .review-hero { flex-direction: column; align-items: flex-start; }
+  .review-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ---------------- Toast ---------------- */
 .toast {
   position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);
