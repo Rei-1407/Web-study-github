@@ -1,0 +1,7 @@
+# Node deps for the build tooling (not needed to run the site)
+tools/node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

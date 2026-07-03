@@ -1,0 +1,13 @@
+{
+  "name": "github-study-build-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Build script that turns the source Markdown guide into lesson data for the study site.",
+  "scripts": {
+    "build": "node build-content.mjs"
+  },
+  "dependencies": {
+    "marked": "^12.0.0"
+  }
+}
