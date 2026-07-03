@@ -1,6 +1,6 @@
 # Học GitHub cho dự án Unreal Engine
 
-Website học & luyện tập nội bộ giúp thành thạo Git/GitHub trong bối cảnh làm game trên Unreal Engine. Nội dung được xây dựng từ tài liệu chuẩn [`Huong-dan-GitHub-cho-du-an-Unreal-Engine-v3.md`](Huong-dan-GitHub-cho-du-an-Unreal-Engine-v3.md).
+Website học & luyện tập nội bộ giúp thành thạo Git/GitHub trong bối cảnh làm game trên Unreal Engine. Nội dung bài học được sinh tự động từ một tài liệu Markdown nguồn được giữ riêng (**không** đưa lên repo).
 
 ## Tính năng
 
@@ -23,7 +23,7 @@ node tools/serve.mjs 4173
 
 ## Cập nhật nội dung
 
-Nội dung bài học được sinh tự động từ file Markdown nguồn. Sau khi sửa `Huong-dan-GitHub-cho-du-an-Unreal-Engine-v3.md`:
+Nội dung bài học được sinh tự động từ file Markdown nguồn. File này được giữ ở máy và đã cho vào `.gitignore` nên **không** nằm trong repo — hãy giữ một bản sao an toàn. Sau khi sửa nó:
 
 ```bash
 cd tools

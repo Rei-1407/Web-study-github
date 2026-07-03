@@ -1,3 +1,6 @@
+# Source Markdown guide — kept locally only (build input), not published to the repo
+Huong-dan-GitHub-cho-du-an-Unreal-Engine-v3.md
+
 # Node deps for the build tooling (not needed to run the site)
 tools/node_modules/
 
