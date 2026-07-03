@@ -27,7 +27,8 @@
   --radius: 12px;
   --radius-sm: 8px;
   --sidebar-w: 300px;
-  --content-w: 860px;
+  --content-w: 1180px;
+  --read-w: 880px;
 
   --mono: "Cascadia Code", "JetBrains Mono", Consolas, "SFMono-Regular", ui-monospace, monospace;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -211,6 +212,55 @@ a:hover { text-decoration: underline; }
 .page-nav a.next { text-align: right; align-items: flex-end; }
 .page-nav .pn-label { font-size: 12px; color: var(--text-faint); }
 .page-nav .pn-title { color: var(--text); font-weight: 600; font-size: 15px; }
+
+/* ---------------- Lesson two-column layout ---------------- */
+.lesson-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 256px;
+  gap: 52px;
+  align-items: start;
+}
+.lesson-grid.no-rail { grid-template-columns: 1fr; }
+.lesson-main { min-width: 0; max-width: var(--read-w); }
+.lesson-grid.no-rail .lesson-main { max-width: 980px; }
+
+.lesson-rail { position: sticky; top: 88px; align-self: start; }
+.toc { border-left: 2px solid var(--border); padding-left: 2px; }
+.toc-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--text-faint); padding: 0 0 8px 16px;
+}
+.toc-nav { display: flex; flex-direction: column; }
+.toc-link {
+  color: var(--text-soft); font-size: 13.5px; line-height: 1.45;
+  padding: 5px 0 5px 16px; margin-left: -2px;
+  border-left: 2px solid transparent;
+}
+.toc-link:hover { color: var(--text); text-decoration: none; }
+.toc-link.toc-sub { padding-left: 28px; font-size: 13px; color: var(--text-faint); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+.toc-practice {
+  display: block; margin: 14px 0 0 16px; font-weight: 600; font-size: 13.5px;
+  color: var(--accent-strong);
+}
+.toc-practice:hover { text-decoration: none; opacity: 0.8; }
+
+/* ---------------- Practice section (clear separation) ---------------- */
+.practice { margin-top: 60px; padding-top: 32px; border-top: 2px dashed var(--border-strong); }
+.practice-head { margin-bottom: 20px; }
+.practice-eyebrow {
+  color: var(--accent); font-weight: 700; font-size: 12px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.practice-head h2 { margin: 8px 0 4px; font-size: 25px; }
+.practice-head p { color: var(--text-soft); margin: 0; font-size: 15.5px; }
+
+/* in-content prev/next (aligned with the reading column) */
+.page-nav.in-content { max-width: none; margin: 0; padding: 26px 0 48px; }
+
+/* heading scroll offset under the sticky top bar */
+.article h2, .article h3 { scroll-margin-top: 88px; }
+#luyen-tap { scroll-margin-top: 78px; }
 
 /* ---------------- Lesson content typography ---------------- */
 .lesson h1 { font-size: 30px; line-height: 1.25; margin: 0 0 6px; }
@@ -525,6 +575,11 @@ tr.cheat-hidden { display: none; }
 .hljs-strong { font-weight: 700; }
 
 /* ---------------- Responsive (desktop-first; graceful narrow) ---------------- */
+@media (max-width: 1240px) {
+  .lesson-grid { grid-template-columns: 1fr; }
+  .lesson-rail { display: none; }
+  .lesson-main { max-width: 980px; margin: 0 auto; }
+}
 @media (max-width: 1080px) {
   .dash-cols { grid-template-columns: 1fr; }
   .stat-grid { grid-template-columns: repeat(2, 1fr); }

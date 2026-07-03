@@ -53,6 +53,7 @@
   const KEY = 'git-ue-study-v1';
   const defaultState = () => ({ lessons: {}, quiz: {}, challenge: {}, grad: {}, lastLesson: null, theme: null });
   let state = load();
+  let spyObserver = null;
 
   function load() {
     try {
@@ -300,29 +301,96 @@
     const kicker = lesson.kind === 'appendix' ? 'Phụ lục ' + lesson.num : 'Mục ' + lesson.num;
     document.getElementById('crumb').innerHTML = `Bài học · <b>${meta.short || lesson.title}</b>`;
 
-    let extra = '';
-    if (QUIZ[id]) extra += buildQuiz(id);
-    if (CHALLENGE[id]) extra += buildChallenges(id);
-    if (id === 'muc-15') extra += buildGraduation();
+    let practiceInner = '';
+    if (QUIZ[id]) practiceInner += buildQuiz(id);
+    if (CHALLENGE[id]) practiceInner += buildChallenges(id);
+    if (id === 'muc-15') practiceInner += buildGraduation();
+    const practiceSection = practiceInner
+      ? `<section class="practice" id="luyen-tap">
+           <div class="practice-head">
+             <span class="practice-eyebrow">✏️ Luyện tập</span>
+             <h2>Đến lượt bạn</h2>
+             <p>Củng cố phần vừa đọc và luyện phản xạ gõ lệnh — mỗi câu đúng đều cộng XP.</p>
+           </div>
+           ${practiceInner}
+         </section>`
+      : '';
 
     const cleanTitle = lesson.title.replace(/`([^`]+)`/g, '$1');
+    const bodyHtml = lesson.html.replace(/\s*<hr>\s*$/, ''); // drop trailing rule (practice adds its own divider)
+
     root.innerHTML =
-      `<article class="lesson">
-        <div class="lesson-kicker">${meta.icon || ''} ${kicker}</div>
-        <h1>${cleanTitle}</h1>
-        <div class="article">${lesson.html}</div>
-        ${extra}
-        ${buildCompleteBar(id)}
-      </article>`;
+      `<div class="lesson-grid">
+        <div class="lesson-main">
+          <article class="lesson">
+            <div class="lesson-kicker">${meta.icon || ''} ${kicker}</div>
+            <h1>${cleanTitle}</h1>
+            <div class="article">${bodyHtml}</div>
+          </article>
+          ${practiceSection}
+          ${buildCompleteBar(id)}
+          ${buildPageNav(idx)}
+        </div>
+        <aside class="lesson-rail" id="lesson-rail"></aside>
+      </div>`;
 
     if (id === 'muc-14') enhanceCheatsheet(root);
 
     enhanceCode(root);
+    buildTOC(root, !!practiceInner);
     wireQuiz(root, id);
     wireChallenges(root, id);
     wireGraduation(root);
     wireCompleteBar(root, id);
-    renderPageNav(idx);
+    document.getElementById('page-nav').innerHTML = ''; // external footer unused on lessons
+  }
+
+  // Build the "Trong mục này" rail from the article headings, with scroll-spy.
+  function buildTOC(root, hasPractice) {
+    const rail = root.querySelector('#lesson-rail');
+    const grid = root.querySelector('.lesson-grid');
+    if (!rail) return;
+    const heads = Array.from(root.querySelectorAll('.article h2[id], .article h3[id]'));
+    if (heads.length < 2) { grid.classList.add('no-rail'); rail.remove(); return; }
+
+    let html = '<div class="toc"><div class="toc-title">Trong mục này</div><nav class="toc-nav">';
+    heads.forEach((h) => {
+      const sub = h.tagName === 'H3' ? ' toc-sub' : '';
+      html += `<a class="toc-link${sub}" href="#${h.id}" data-target="${h.id}">${h.textContent}</a>`;
+    });
+    html += '</nav>';
+    if (hasPractice) html += '<a class="toc-practice" href="#luyen-tap">✏️ Luyện tập &amp; kiểm tra</a>';
+    html += '</div>';
+    rail.innerHTML = html;
+
+    // in-page scroll without touching the router hash
+    rail.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const el = document.getElementById(a.getAttribute('href').slice(1));
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    wireScrollSpy(root, heads);
+  }
+
+  function wireScrollSpy(root, heads) {
+    const links = {};
+    root.querySelectorAll('.toc-link').forEach((l) => (links[l.dataset.target] = l));
+    if (spyObserver) spyObserver.disconnect();
+    spyObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            Object.values(links).forEach((l) => l.classList.remove('active'));
+            if (links[e.target.id]) links[e.target.id].classList.add('active');
+          }
+        });
+      },
+      { rootMargin: '-80px 0px -72% 0px', threshold: 0 }
+    );
+    heads.forEach((h) => spyObserver.observe(h));
   }
 
   function buildCompleteBar(id) {
@@ -361,15 +429,16 @@
     });
   }
 
-  function renderPageNav(idx) {
+  function buildPageNav(idx) {
     const prev = idx > 0 ? ORDER[idx - 1] : null;
     const next = idx < ORDER.length - 1 ? ORDER[idx + 1] : null;
-    let html = '';
+    let html = '<nav class="page-nav in-content">';
     if (prev) html += `<a href="#/lesson/${prev}"><span class="pn-label">← Trước</span><span class="pn-title">${navTitleOf(prev)}</span></a>`;
     else html += `<a href="#/"><span class="pn-label">←</span><span class="pn-title">Trang chủ</span></a>`;
     if (next) html += `<a class="next" href="#/lesson/${next}"><span class="pn-label">Tiếp →</span><span class="pn-title">${navTitleOf(next)}</span></a>`;
     else html += `<a class="next" href="#/"><span class="pn-label">→</span><span class="pn-title">Hoàn tất · Về trang chủ</span></a>`;
-    document.getElementById('page-nav').innerHTML = html;
+    html += '</nav>';
+    return html;
   }
 
   // ---------------- Quiz ----------------
