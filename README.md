@@ -51,4 +51,8 @@ tools/serve.mjs            # static server để chạy thử
 
 ## Triển khai
 
-Trang được host bằng **GitHub Pages** (phục vụ từ nhánh `main`, thư mục gốc). Mỗi lần push lên `main`, GitHub tự cập nhật trang.
+Trang được host bằng **GitHub Pages**, deploy qua **GitHub Actions** (`.github/workflows/deploy.yml`): mỗi lần push lên `main`, workflow tải toàn bộ thư mục gốc lên và publish. Nếu một lần deploy lỗi tạm thời (GitHub thỉnh thoảng báo *"Deployment failed, try again later"*), chỉ cần chạy lại workflow:
+
+```bash
+gh workflow run deploy.yml --ref main
+```
